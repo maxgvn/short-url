@@ -57,7 +57,7 @@ class App extends Component {
             {this.state.arrayLinks.map((link, index) => {
               return (
                 <div key={index} className="linklist">
-                  <div> Lien Original</div>
+                  <div>{console.log(link)} Lien Original</div>
                   <div> Short URL </div>
                   <div> Visites </div>
                 </div>
