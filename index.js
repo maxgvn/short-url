@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-const shortid = require("shortid");
 const validUrl = require("valid-url");
+const path = require("path");
 
 const express = require("express");
 const app = express();
@@ -27,48 +27,51 @@ db.once("open", function() {
 const shortURL = require("./models/shortURL");
 const Counter = require("./models/counter");
 const errorUrl = "/error";
-
-//
+// CREATE FIVE CHAR HASH //
 
 Math.random()
   .toString(36)
   .slice(2, 7);
-// CREATE FIVE LETTER HASH //
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
 app.post("/api/shorten", async (req, res, next) => {
-  console.log(req.body.url);
-  // link to front //
-  const { originalUrl, shortBaseUrl } = req.body;
+  const originalUrl = req.body.originalUrl;
+  const shortBaseUrl = "https://short-url-max-gavanon.herokuapp.com";
+  console.log(originalUrl, "original");
+  if (validUrl.isUri(originalUrl)) {
+  } else {
+    return res.status(401).json("Invalid Base Url");
+  }
 
-  shortURL.findOne(
-    { originalUrl: urlData },
+  const urlCode = Math.random()
+    .toString(36)
+    .slice(2, 7);
 
-    (err, found) => {
-      if (found) {
-        console.log("entry found in db");
-        res.send({
-          originalUrl: urlData,
-          hash: btoa(doc._id),
-          status: 200
-        });
+  const updatedAt = new Date();
+
+  if (validUrl.isUri(originalUrl)) {
+    try {
+      const item = await shortURL.findOne({ originalUrl: originalUrl });
+      if (item) {
+        res.status(200).json(item);
       } else {
-        console.log("entry NOT found in db, saving new");
-        var url = new shortURL({
-          originalUrl: urlData
+        shortUrl = shortBaseUrl + "/" + urlCode;
+        const item = new shortURL({
+          originalUrl,
+          shortUrl,
+          urlCode,
+          updatedAt
         });
-        url.save(function(err) {
-          if (err) return console.error(err);
-          res.send({
-            url: urlData,
-            hash: btoa(url._id),
-            status: 200
-          });
-        });
+        await item.save();
+        res.status(200).json(item);
       }
+    } catch (err) {
+      res.status(401).json("Invalid User Id");
     }
-  );
+  } else {
+    return res.status(401).json("Invalid Original Url");
+  }
 });
 
 app.get("/api/short-url/:code", async (req, res) => {
@@ -79,6 +82,11 @@ app.get("/api/short-url/:code", async (req, res) => {
   } else {
     return res.redirect(errorUrl);
   }
+});
+
+app.get("/api/links", async (req, res) => {
+  const arrayLinks = await shortURL.find();
+  return res.json(arrayLinks);
 });
 
 app.get("*", (req, res) => {

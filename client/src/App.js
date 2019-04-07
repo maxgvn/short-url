@@ -5,8 +5,19 @@ import "./App.css";
 
 class App extends Component {
   state = {
-    input: ""
+    originalUrl: "",
+    arrayLinks: [],
+    isLoaded: false
   };
+
+  async componentDidMount() {
+    try {
+      const response = await axios.get("http://localhost:3000/api/links");
+      this.setState({ arrayLinks: response.data, isLoaded: true });
+    } catch (error) {
+      alert(error);
+    }
+  }
 
   render() {
     return (
@@ -22,14 +33,14 @@ class App extends Component {
                   className="form-control"
                   type="text"
                   placeholder="Votre URL à raccourcir"
-                  value={this.state.input}
+                  value={this.state.originalUrl}
                   onChange={e => this.setState({ input: e.target.value })}
                 />
                 <input
                   className="btn-default"
                   type="button"
                   onClick={() =>
-                    axios.post({
+                    axios.get({
                       url: "/api/shorten",
                       data: { originalUrl: this.state.input }
                     })
@@ -41,7 +52,7 @@ class App extends Component {
         </div>
         <div className="bodyMain">
           <div className="centerMain">
-            <p> MAP COMPOSANT </p>
+            <p> {console.log(this.state, "state")}</p>
           </div>
         </div>
       </div>
