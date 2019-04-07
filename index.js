@@ -24,7 +24,7 @@ db.once("open", function() {
   console.log("connection active");
 });
 
-const shortURL = require("./models/shortURL");
+const shortURL = require("./models/shortUrl");
 const Counter = require("./models/counter");
 const errorUrl = "/error";
 // CREATE FIVE CHAR HASH //
@@ -86,6 +86,7 @@ app.get("/api/short-url/:code", async (req, res) => {
 
 app.get("/api/links", async (req, res) => {
   const arrayLinks = await shortURL.find();
+  console.log(arrayLinks, "check");
   return res.json(arrayLinks);
 });
 
