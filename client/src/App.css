@@ -39,3 +39,8 @@ h1 {
   flex-direction: row;
   justify-content: flex-start;
 }
+
+.linklist {
+  display: flex;
+  flex-direction: row;
+}

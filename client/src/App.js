@@ -12,7 +12,9 @@ class App extends Component {
 
   async componentDidMount() {
     try {
-      const response = await axios.get("http://localhost:3000/api/links");
+      const response = await axios.get(
+        "https://short-url-max-gavanon.herokuapp.com/api/links"
+      );
       this.setState({ arrayLinks: response.data, isLoaded: true });
     } catch (error) {
       alert(error);
@@ -34,7 +36,7 @@ class App extends Component {
                   type="text"
                   placeholder="Votre URL à raccourcir"
                   value={this.state.originalUrl}
-                  onChange={e => this.setState({ input: e.target.value })}
+                  onChange={e => this.setState({ originalUrl: e.target.value })}
                 />
                 <input
                   className="btn-default"
@@ -52,7 +54,15 @@ class App extends Component {
         </div>
         <div className="bodyMain">
           <div className="centerMain">
-            <p> {console.log(this.state, "state")}</p>
+            {this.state.arrayLinks.map((link, index) => {
+              return (
+                <div key={index} className="linklist">
+                  <div> Lien Original</div>
+                  <div> Short URL </div>
+                  <div> Visites </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

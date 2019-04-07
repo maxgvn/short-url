@@ -67,10 +67,10 @@ app.post("/api/shorten", async (req, res, next) => {
         res.status(200).json(item);
       }
     } catch (err) {
-      res.status(401).json("Invalid User Id");
+      res.status(401).json("Invalid Url");
     }
   } else {
-    return res.status(401).json("Invalid Original Url");
+    return res.status(401).json("Invalid Url");
   }
 });
 
