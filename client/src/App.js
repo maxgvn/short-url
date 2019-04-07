@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import axios from "axios";
 
 import "./App.css";
 
@@ -24,7 +25,16 @@ class App extends Component {
                   value={this.state.input}
                   onChange={e => this.setState({ input: e.target.value })}
                 />
-                <input className="btn-default" type="button" />
+                <input
+                  className="btn-default"
+                  type="button"
+                  onClick={() =>
+                    axios.post({
+                      url: "/api/shorten",
+                      data: { originalUrl: this.state.input }
+                    })
+                  }
+                />
               </form>
             </div>
           </div>
