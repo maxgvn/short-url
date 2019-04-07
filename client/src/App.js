@@ -44,7 +44,7 @@ class App extends Component {
                   onClick={() =>
                     axios.get({
                       url: "/api/shorten",
-                      data: { originalUrl: this.state.input }
+                      data: { originalUrl: this.state.originalUrl }
                     })
                   }
                 />
