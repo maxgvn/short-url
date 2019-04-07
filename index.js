@@ -14,6 +14,12 @@ app.use(cors());
 
 const mongoose = require("mongoose");
 
+const shortURL = require("./models/shortUrl");
+
+const Counter = require("./models/counter");
+
+const errorUrl = "/error";
+
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/short-url", {
   useNewUrlParser: true
 });
@@ -24,9 +30,6 @@ db.once("open", function() {
   console.log("connection active");
 });
 
-const shortURL = require("./models/shortUrl");
-const Counter = require("./models/counter");
-const errorUrl = "/error";
 // CREATE FIVE CHAR HASH //
 
 Math.random()
@@ -74,7 +77,7 @@ app.post("/api/shorten", async (req, res, next) => {
   }
 });
 
-app.get("/api/short-url/:code", async (req, res) => {
+app.get("/:code", async (req, res) => {
   const urlCode = req.params.code;
   const item = await shortURL.findOne({ urlCode: urlCode });
   if (item) {

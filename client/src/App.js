@@ -44,11 +44,10 @@ class App extends Component {
                   value="SHORTEN URL"
                   type="button"
                   onClick={() =>
-                    axios.post({
-                      url:
-                        "https://short-url-max-gavanon.herokuapp.com/api/shorten",
-                      data: { originalUrl: this.state.originalUrl }
-                    })
+                    axios.post(
+                      "https://short-url-max-gavanon.herokuapp.com/api/shorten",
+                      { originalUrl: this.state.originalUrl }
+                    )
                   }
                 />
               </form>
