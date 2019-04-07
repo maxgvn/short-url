@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import "./App.css";
 
 class App extends Component {
+  state = {
+    input: ""
+  };
+
   render() {
     return (
       <div className="App">
@@ -17,8 +21,10 @@ class App extends Component {
                   className="form-control"
                   type="text"
                   placeholder="Votre URL à raccourcir"
+                  value={this.state.input}
+                  onChange={e => this.setState({ input: e.target.value })}
                 />
-                <input className="btn-default" type="submit" />
+                <input className="btn-default" type="button" />
               </form>
             </div>
           </div>
