@@ -32,14 +32,16 @@ class App extends Component {
             <div>
               <form className="input-form">
                 <input
-                  className="form-control"
+                  className="form-control formleft"
                   type="text"
-                  placeholder="Votre URL à raccourcir"
+                  placeholder="Votre URL à raccourcir - avec http préfixe"
                   value={this.state.originalUrl}
                   onChange={e => this.setState({ originalUrl: e.target.value })}
                 />
+
                 <input
-                  className="btn-default"
+                  className="btn-default formright"
+                  value="SHORTEN URL"
                   type="button"
                   onClick={() =>
                     axios.get({
@@ -54,15 +56,20 @@ class App extends Component {
         </div>
         <div className="bodyMain">
           <div className="centerMain">
-            {this.state.arrayLinks.map((link, index) => {
-              return (
-                <div key={index} className="linklist">
-                  <div>{console.log(link, "check link")} Lien Original</div>
-                  <div> Short URL </div>
-                  <div> Visites </div>
-                </div>
-              );
-            })}
+            <ul className="list-group list-group-flush">
+              <li className="linklist list-group-item grey">
+                <strong> Lien d'origine</strong>
+                <strong> Lien raccourci</strong>
+              </li>
+              {this.state.arrayLinks.map((link, index) => {
+                return (
+                  <li key={index} className="linklist list-group-item">
+                    <div> {link.originalUrl} </div>
+                    <div> {link.shortUrl} </div>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
       </div>
